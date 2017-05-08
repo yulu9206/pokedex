@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Build Your Own Pokedex</title>
+	<style type="text/css">
+		#wrapper{
+			width: 1100px;
+			background-color: yellow;
+		}
+		#left{
+			width: 800px;
+			display: inline-block;
+
+		}		
+		#right{
+			width: 150px;
+			height: 450px;
+			display: inline-block;
+			vertical-align: top;
+			border: 25px solid red;
+			padding: 10px;
+		}
+	</style>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var htmlString = "";
+			for (var i = 1; i < 152; i++) {
+				var picString = "<img id=" + i + " src='http://pokeapi.co/media/img/" + i + ".png'>";
+				htmlString += picString;
+			}
+			$('#left').append(htmlString);
+			$('img').on('click', function(){
+				var picid = $(this).attr("id");
+				var apiLink = "http://pokeapi.co/api/v1/pokemon/" + picid + "/";
+				// console.log(apiLink);
+            	$.get(apiLink, function(res) {
+            		console.log(res);
+                    var html_str = "";
+                    html_str += ("<h2>" + res.name + "</h2>");
+                    html_str += "<img src='http://pokeapi.co/media/img/" + picid + ".png'>"; 
+                    console.log(html_str);
+                    html_str += "<h3>Types</h3>";
+                    html_str += "<ul>";
+                    for(var i = 0; i < res.types.length; i++) {
+                        html_str += "<li>" + res.types[i].name + "</li>";
+                    }
+                    html_str += "</ul>";
+                    html_str += "<h3>Height</h3>";
+                    html_str += "<p>" + res.height + "</p>";
+                    html_str += "<h3>Weight</h3>";
+                    html_str += "<p>" + res.weight + "</p>";
+                    $("#right").html(html_str);
+                }, "json");
+			});
+		});
+	</script>
+</head>
+<body>
+	<div id='wrapper'>
+		<div id='left'>
+			
+		</div>
+		<div id='right'>
+		
+		</div>
+	</div> 	
+</body>
+</html>
+
